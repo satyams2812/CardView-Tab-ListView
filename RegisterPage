@@ -1,0 +1,48 @@
+package e.satyamsharma.myapplication;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class regi extends AppCompatActivity {
+    String name, email, phone, user, pss;
+    EditText name1, email1, phone1, user1, pss1;
+    SQLiteDatabase db;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_regi);
+        name1 = (EditText) findViewById(R.id.txtname);
+        email1 = (EditText) findViewById(R.id.txtemail);
+        phone1 = (EditText) findViewById(R.id.txtphone);
+        user1 = (EditText) findViewById(R.id.txtuser);
+        pss1 = (EditText) findViewById(R.id.txtpass);
+        db = openOrCreateDatabase("Emp", MODE_PRIVATE, null);
+        db.execSQL("create table if not exists em(sid INTEGER PRIMARY KEY AUTOINCREMENT,Name varchar(10),Email varchar(20),Phone varchar(10),Username varchar(10),Password varchar(10))");
+    }
+
+    public void sumbit(View view) {
+        name = name1.getText().toString();
+        email = email1.getText().toString();
+        phone = phone1.getText().toString();
+        user = user1.getText().toString();
+        pss = pss1.getText().toString();
+        insert();
+    }
+
+    private void insert() {
+        String s = "insert into em(Name,Email,Phone,Username,Password) values ('" + name + "','" + email + "','" + phone + "','" + user + "','" + pss + "')";
+        db.execSQL(s);
+        Toast.makeText(this, "Successfully inserted", Toast.LENGTH_SHORT).show();
+        name1.setText("");
+        email1.setText("");
+        phone1.setText("");
+        user1.setText("");
+        pss1.setText("");
+        startActivity(new Intent(this, MainActivity.class));
+    }
+}
